@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+
+html, body {
+
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Source Sans 3", sans-serif;
+
+}
+body{
+    background: #FAFAFA;
+}
+header{
+  background-color: white;
+  width: 100%;
+  height: 6.5vh;
+  border-bottom: 1px solid #00000014;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+header .header-container{
+  width: 93vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+header .logo{
+  width: 30px;
+  height: 30px;
+  background-color: rgb(240, 240, 240);
+  border-radius:12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo img{
+  height:20px;
+  width: 20px;
+}
+
+header .dark{
+  margin-left: auto;
+  width: 35px;
+  height: 35px;
+  border:1px solid lightgrey;
+  border-radius:10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .addtask{
+  width: 80px;
+  height: 35px;
+  background-color: #00C4B0;
+  color:white;
+  border-radius:10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left:2vw;
+  font-weight: 700;
+  gap:10px;
+}
+.body-container{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.tasks-overview{
+  width: 93vw;
+  height: 13.5vh;
+  
+  margin-top: 3.5vh;
+  display: flex;
+  flex-direction: row;
+  gap:3vw;
+}
+.tasks-overview .totaltask,
+.tasks-overview .pending,
+.tasks-overview .completed {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #00000014;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.tasks-overview  .img-wrapper{
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+
+  margin-left: 15px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-and-filter{
+  width: 93vw;
+
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  
+  margin-top: 2.5vh;
+  gap:2vh;
+}
+
+.search-and-filter div{
+  width: 100%;
+  height: 4vh;
+  border:1px solid #00000014;
+  border-radius: 10px;
+}
+.search-and-filter .search{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+}
+.search-and-filter .search img{
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+.search-and-filter .search input{
+  flex:1;
+  margin-left:10px;
+  outline: none;
+  
+}
+.search-and-filter .filter {
+  display: flex;
+  align-items: center;
+  outline: none;
+  padding-left:15px;
+  padding-right:15px;
+  background-color: white;
+}
+.filter select {
+    width: 100%;
+}
+.task-and-page {
+  width: 93vw;
+  color:rgb(112, 112, 112);
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  gap:2vw;
+  margin-top: 2.5vh;
+}
+
+.task-container{
+  width: 93vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap:1.5vh;
+  
+}
+
+.task{
+  width: 93vw;
+  height: auto;
+  border:1px solid #00000014;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.task .btn-container{
+  width: 50px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+.task-details{
+  flex:1;
+  display: flex;
+  flex-direction: column;
+
+}
+.task-details .task-header{
+  
+  display: flex;
+  flex-direction: row;
+
+}
+.btn-container button{
+  width: 20px;
+  height: 20px;
+  border:2px solid #00C4B0;
+  border-radius: 50%;
+  margin-top: 1.5vh;
+}
+.task-details .status-and-date{
+  display: flex;
+  flex-direction: row;
+
+}
+.status{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:5px;
+  color: #FCC419;
+
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.status img{
+  width: 15px;
+  height: 15px;
+}
+.pagination{
+  width: 70vw;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  margin-top: 50px;
+  gap:7px;
+}
+.pagination button {
+  width: 35px;
+  height: 35px;
+
+  border-radius: 8px;
+
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: "Source Sans 3", sans-serif;
+  font-weight: 600;
+}
+
+.pagination button.active{
+  background-color: #00C4B0;
+  color:white;
+  border:none;
+}
+.pagination img {
+  width: 15px;
+  height: 15px;
+}
