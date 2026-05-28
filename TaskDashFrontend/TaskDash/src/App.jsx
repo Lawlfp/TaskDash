@@ -177,7 +177,7 @@ function App() {
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
@@ -202,10 +202,20 @@ function App() {
     }
   }
 
+  //dark mode
+  const [darkMode, setDarkMode] = useState(false);
+  function toggleDarkMode() {
+    setDarkMode(!darkMode);
+  }
 
+  let themeClass = "main";
 
+    if (darkMode) {
+      themeClass = "main dark";
+    }
   return (
     <>
+    <div className={themeClass}>
     {/*Add Task*/}
     {
       isAddTaskOpen===true && 
@@ -268,7 +278,7 @@ function App() {
       <div className="header-container">
       <div className="logo"><img src="logo.png" alt="Logo"/></div>
       <span className="ml-[2.5vw] font-bold">TaskDash</span>
-      <button className="dark">
+      <button className="dark" onClick={toggleDarkMode}>
         <img src='moon.png' className='h-[20px] w-[20px]'/>
       </button>
       <button className="addtask" onClick={AddTask}>
@@ -284,30 +294,30 @@ function App() {
           <img src='./tasks.png' className='w-[17px] h-[17px]'/>
         </div>
       <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.length}</span>
-      <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Total Task/s</span>
+      <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Total Task/s</span>
       </div>
       <div className="pending">
         <div className="img-wrapper bg-[#FFFBEB]">
           <img src='./pending.png' className='w-[17px] h-[17px]'/>
         </div>
         <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "pending").length}</span>
-        <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Pending</span>
+        <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Pending</span>
       </div>
       <div className="completed">
         <div className="img-wrapper bg-[#E6FAF7]">
           <img src='./completed.png' className='w-[17px] h-[17px]'/>
         </div>
         <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "completed").length}</span>
-        <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Completed</span>
+        <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Completed</span>
       </div>
     </div>
 
-    <div className="search-and-filter">
-      <div className="search">
+    <div className="search-and-filter flex sm:flex-row">
+      <div className="search w-[100%] !sm:w-1/2">
         <img src='./search.png'/>
         <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search tasks..."></input>
       </div>
-      <div className="filter">
+      <div className="filter w-[100%] !sm:w-1/2">
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="all">All Tasks</option>
           <option value="pending">Pending</option>
@@ -469,6 +479,7 @@ function App() {
 
     </div>
 
+    </div>
     </div>
     </div>
     </div>
