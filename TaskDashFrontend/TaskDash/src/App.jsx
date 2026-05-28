@@ -213,6 +213,41 @@ function App() {
     if (darkMode) {
       themeClass = "main dark height-[100%]";
     }
+
+  //toggle completed and pending status
+  function toggleTaskStatus(taskId) {
+  let newStatus = "";
+
+  const updatedTasks = tasks.map((task) => {
+    if (task.id !== taskId) return task;
+
+    const isCompleted = task.status === "completed";
+
+    if (isCompleted) {
+      newStatus = "pending";
+    } else {
+      newStatus = "completed";
+    }
+
+    return {
+      ...task,
+      status: newStatus,
+    };
+    });
+
+    setTasks(updatedTasks);
+
+    fetch(`http://127.0.0.1:8000/api/tasks/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        status: newStatus,
+      }),
+    });
+  }
+
   return (
     <>
     <div className={darkMode ? "dark" : ""}>
@@ -395,7 +430,7 @@ function App() {
         return (
           <div className="task bg-white dark:bg-[#1e293b]" key={task.id}>
             <div className="btn-container">
-              <button className={checkClass}>{checkIcon}</button>
+              <button onClick={() => toggleTaskStatus(task.id)} className={checkClass}>{checkIcon}</button>
             </div>
 
             <div className="task-details">
