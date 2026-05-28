@@ -58,7 +58,123 @@ function App() {
     status: "completed",
     date: "May 25, 2026",
   },
-];
+  {
+    id: 5,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 6,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 7,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 8,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 9,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 10,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 11,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+    {
+    id: 12,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+    {
+    id: 13,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+    {
+    id: 14,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+    {
+    id: 15,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  ];
+
+  //pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentTasks = tasks.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(tasks.length / itemsPerPage);
+
+  const pages = [];
+  let start = currentPage;
+
+  if (start === totalPages) {
+    start = totalPages - 1;
+  }
+
+  if (start < 1) {
+    start = 1;
+  }
+
+  for (let i = start; i <= start + 1; i++) {
+    if (i >= 1 && i <= totalPages) {
+      pages.push(i);
+    }
+  }
+
   return (
     <>
     {/*Add Task*/}
@@ -143,15 +259,15 @@ function App() {
     </div>
 
     <div className="task-and-page">
-      <span>10 tasks</span>
+      <span>{tasks.length} tasks</span>
       <span>—</span>
-      <span>page 1 of 3</span>
+      <span>page {currentPage} of {totalPages}</span>
     </div>
     
     <div className="task-container mt-5">
       
     {/*Tasks */}
-    {tasks.map((task) => {
+    {currentTasks.map((task) => {
 
       let isCompleted = task.status === "completed";
 
@@ -242,15 +358,47 @@ function App() {
 
     </div>
 
+
     <div className="pagination">
-      <button className="doubleprevious opacity-30"><img src='doubleprevious.png'/></button>
-      <button className="previous opacity-30"><img src='previous.png'/></button>
-      <button className="active">1</button>
-      <button className="border border-[#00000014]">2</button>
-      <button className='border border-[#00000014]'>3</button>
-      <button className="next border border-[#00000014]"><img className="scale-x-[-1]" src='previous.png'/></button>
-      <button className="doublenext border border-[#00000014]"><img className="scale-x-[-1]" src='doubleprevious.png'/></button>
+      <button onClick={() => {
+        if (currentPage !== 1) {
+          setCurrentPage(1);
+        }
+      }} 
+      className={currentPage === 1 ? "doubleprevious opacity-30" : "doubleprevious border border-[#00000014]"}><img src='doubleprevious.png'/></button>
+
+      <button onClick={() => {
+        if (currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+      }} 
+      className={currentPage === 1 ? "previous opacity-30" : "previous border border-[#00000014]"}><img src='previous.png'/></button>
+
+      {pages.map((page) => (
+        <button
+          key={page}
+          className={currentPage === page ? "active" : "border border-[#00000014]"}
+          onClick={() => setCurrentPage(page)}>
+          {page}
+        </button>
+      ))}
+      
+      <button onClick={() => {
+        if (currentPage < totalPages) {
+          setCurrentPage(currentPage + 1);
+        }
+      }}
+      className={currentPage === totalPages ? "next opacity-30" : "next border border-[#00000014]" }><img className="scale-x-[-1]" src='previous.png'/></button>
+
+      <button onClick={() => {
+        if (currentPage !== totalPages) {
+          setCurrentPage(totalPages);
+        }
+      }}
+      className={currentPage === totalPages ? "doublenext opacity-30" : "doublenext border border-[#00000014]"}><img className="scale-x-[-1]" src='doubleprevious.png'/></button>
+
     </div>
+
 
     </div>
     </div>
