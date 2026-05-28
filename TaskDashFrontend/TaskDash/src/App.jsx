@@ -232,7 +232,7 @@ function App() {
             <img src='./pending.png' className='w-[17px] h-[17px]'/>
             <span>Pending</span>
           </button>
-          <button className={`${editCompletedStatus} border border-[#00000014] dark:border-gray-700`} onClick={setCompleted}>
+          <button className={`${completedstatus} border border-[#00000014] dark:border-gray-700`} onClick={setCompleted}>
             <img src='./completed.png' className='w-[17px] h-[17px]'/>
             <span>Completed</span>
           </button>
@@ -340,106 +340,114 @@ function App() {
     <div className="task-container mt-5">
       
     {/*Tasks */}
-    {currentTasks.map((task) => {
+    
 
-      let isCompleted = task.status === "completed";
+    {currentTasks.length === 0 ? (
+      <div className="text-center text-gray-400 mt-10 dark:text-gray-500">
+        No tasks yet
+      </div>
+    ) : (
+      currentTasks.map((task) => {
+        let isCompleted = task.status === "completed";
 
-      let checkIcon = null;
-      if (isCompleted) {
-        checkIcon = <img src="./check.png" className="w-[13px] h-[13px]" />;
-      }
+        let checkIcon = null;
+        if (isCompleted) {
+          checkIcon = <img src="./check.png" className="w-[13px] h-[13px]" />;
+        }
 
-      let checkClass = "check";
-      if (isCompleted) {
-        checkClass =
-          "check bg-[#00C4B0] flex items-center justify-center text-white";
-      }
+        let checkClass = "check";
+        if (isCompleted) {
+          checkClass =
+            "check bg-[#00C4B0] flex items-center justify-center text-white";
+        }
 
-      let titleClass = "mt-3 text-base font-semibold";
-      if (isCompleted) {
-        titleClass = titleClass + " opacity-50 line-through";
-      }
+        let titleClass = "mt-3 text-base font-semibold";
+        if (isCompleted) {
+          titleClass = titleClass + " opacity-50 line-through";
+        }
 
-      let descriptionClass = "mt-2.5 text-sm text-gray-500 pr-5";
-      if (isCompleted) {
-        descriptionClass = descriptionClass + " opacity-50";
-      }
+        let descriptionClass = "mt-2.5 text-sm text-gray-500 pr-5";
+        if (isCompleted) {
+          descriptionClass = descriptionClass + " opacity-50";
+        }
 
-      let statusIcon = "./pending.png";
-      if (isCompleted) {
-        statusIcon = "./completed.png";
-      }
+        let statusIcon = "./pending.png";
+        if (isCompleted) {
+          statusIcon = "./completed.png";
+        }
 
-      let statusTextClass = "font-semibold text-[#D97706]";
-      if (isCompleted) {
-        statusTextClass = "font-semibold text-[#00C4B0]";
-      }
+        let statusTextClass = "font-semibold text-[#D97706]";
+        if (isCompleted) {
+          statusTextClass = "font-semibold text-[#00C4B0]";
+        }
 
-      let status = "Pending";
-      if (isCompleted) {
-        status = "Completed";
-      }
+        let status = "Pending";
+        if (isCompleted) {
+          status = "Completed";
+        }
 
-      let statusClass = "status mt-3 mb-4 text-xs bg-[#FFFBEB] dark:bg-amber-400/10 dark:text-amber-300";
-      if (isCompleted) {
-        statusClass = "status mt-3 mb-4 text-xs bg-[#E6FAF7] dark:bg-teal-900";
-      }
+        let statusClass =
+          "status mt-3 mb-4 text-xs bg-[#FFFBEB] dark:bg-amber-400/10 dark:text-amber-300";
+        if (isCompleted) {
+          statusClass = "status mt-3 mb-4 text-xs bg-[#E6FAF7] dark:bg-teal-900";
+        }
 
-      return (
-        <div className="task bg-white dark:bg-[#1e293b]" key={task.id}>
-          <div className="btn-container">
-            <button className={checkClass}>
-              {checkIcon}
-            </button>
-          </div>
-
-          <div className="task-details">
-            <div className="task-header">
-              <span className={`${titleClass} dark:text-white`}>
-                {task.title}
-              </span>
-
-              <button onClick={() => {
-                setEditTaskOpen(true);
-                setSelectedTaskId(task.id);
-                setEditTitle(task.title);
-                setEditDescription(task.description);
-                setEditStatus(task.status);
-                if (task.status === "pending") {
-                  setEditPending();
-                } else {
-                  setEditCompleted();
-                }
-              }} 
-              className="mt-4 ml-auto w-[17px] h-[17px]">
-                <img src="./edit.png" className='dark:invert'/>
-              </button>
-
-              <button onClick={() => deleteTask(task.id)} className="mt-4 ml-4 mr-5 w-[17px] h-[17px]">
-                <img src="./delete.png" className='dark:invert'/>
-              </button>
+        return (
+          <div className="task bg-white dark:bg-[#1e293b]" key={task.id}>
+            <div className="btn-container">
+              <button className={checkClass}>{checkIcon}</button>
             </div>
 
-            <span className={descriptionClass}>
-              {task.description}
-            </span>
-
-            <div className="status-and-date">
-              <div className={statusClass}>
-                <img src={statusIcon} className="w-[17px] h-[17px]" />
-                <span className={statusTextClass}>
-                  {status}
+            <div className="task-details">
+              <div className="task-header">
+                <span className={`${titleClass} dark:text-white`}>
+                  {task.title}
                 </span>
+
+                <button
+                  onClick={() => {
+                    setEditTaskOpen(true);
+                    setSelectedTaskId(task.id);
+                    setEditTitle(task.title);
+                    setEditDescription(task.description);
+                    setEditStatus(task.status);
+
+                    if (task.status === "pending") {
+                      setEditPending();
+                    } else {
+                      setEditCompleted();
+                    }
+                  }}
+                  className="mt-4 ml-auto w-[17px] h-[17px]"
+                >
+                  <img src="./edit.png" className="dark:invert" />
+                </button>
+
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="mt-4 ml-4 mr-5 w-[17px] h-[17px]"
+                >
+                  <img src="./delete.png" className="dark:invert" />
+                </button>
               </div>
 
-              <span className="date mt-3 mb-4 ml-3 py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">
-                {formatDate(task.created_at)}
-              </span>
+              <span className={descriptionClass}>{task.description}</span>
+
+              <div className="status-and-date">
+                <div className={statusClass}>
+                  <img src={statusIcon} className="w-[17px] h-[17px]" />
+                  <span className={statusTextClass}>{status}</span>
+                </div>
+
+                <span className="date mt-3 mb-4 ml-3 py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">
+                  {formatDate(task.created_at)}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      );
-    })}
+        );
+      })
+    )}
 
     </div>
 
