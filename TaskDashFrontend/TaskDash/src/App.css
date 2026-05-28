@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 html, body {
-
+  height: 100%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -11,17 +11,25 @@ html, body {
   font-family: "Source Sans 3", sans-serif;
 
 }
-body{
-    background: #FAFAFA;
+
+body {
+  background-color: #f9fafb;
+}
+
+.dark body {
+  background-color: #0f172a;
 }
 header{
-  background-color: white;
+
   width: 100%;
   height: 6.5vh;
   border-bottom: 1px solid #00000014;
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+.main.dark header {
+  background: #1e293b;
 }
 header .header-container{
   width: 93vw;
@@ -34,7 +42,7 @@ header .header-container{
 header .logo{
   width: 30px;
   height: 30px;
-  background-color: rgb(240, 240, 240);
+  
   border-radius:12px;
   display: flex;
   align-items: center;
@@ -45,11 +53,11 @@ header .logo{
   width: 20px;
 }
 
-header .dark{
+header .darkmode{
   margin-left: auto;
   width: 35px;
   height: 35px;
-  border:1px solid lightgrey;
+
   border-radius:10px;
   display: flex;
   align-items: center;
@@ -95,7 +103,7 @@ header .addtask{
   flex-direction: column;
   border: 1px solid #00000014;
   border-radius: 10px;
-  background-color: white;
+
 }
 
 .tasks-overview  .img-wrapper{
@@ -130,7 +138,7 @@ header .addtask{
   display:flex;
   flex-direction: row;
   align-items: center;
-  background-color: white;
+
 }
 .search-and-filter .search img{
   width: 20px;
@@ -149,7 +157,7 @@ header .addtask{
   outline: none;
   padding-left:15px;
   padding-right:15px;
-  background-color: white;
+
 }
 .filter select {
     width: 100%;
@@ -183,7 +191,7 @@ header .addtask{
   border-radius: 10px;
   display: flex;
   flex-direction: row;
-  background-color: white;
+
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .task .btn-container{
@@ -281,7 +289,7 @@ header .addtask{
   width: 450px;
   border-radius: 10px;
   height: auto;
-  background: white;
+
   z-index: 999;
   border: 1px solid #ccc;
   display: flex;
@@ -320,7 +328,7 @@ header .addtask{
   align-items: center;
   gap:10px;
   color: #6b7280;
-
+  border:1px solid rgb(65, 65, 65);
   border-radius: 10px;
   padding-left: 5px;
   padding-right: 10px;
@@ -328,7 +336,7 @@ header .addtask{
   padding-bottom: 2px;
   flex:1;
   height: 40px;
-  border: 1px solid #00000014;
+
   align-items: center;
   justify-content: center;
 }
@@ -356,3 +364,26 @@ header .addtask{
   background-color: #e6f4f3 !important;
 }
 
+.pendingactive {
+  color: #D97706 !important;
+  border: 1px solid #FCC419 !important;
+  background-color: #FFF7CD !important;
+}
+
+.dark .pendingactive {
+  color: #fcd34d !important;
+  border: 1px solid orange !important;
+  background-color: rgb(61, 57, 48)  !important;
+}
+
+.completedactive {
+  color: #00C4B0 !important;
+  border: 1px solid #00C4B0 !important;
+  background-color: #e6f4f3 !important;
+}
+
+.dark .completedactive {
+  color: #5eead4 !important;
+  border: 1px solid #134e4a !important;
+  background-color: #042f2e !important;
+}

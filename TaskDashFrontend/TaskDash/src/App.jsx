@@ -208,37 +208,38 @@ function App() {
     setDarkMode(!darkMode);
   }
 
-  let themeClass = "main";
+  let themeClass = "main height-[100%]";
 
     if (darkMode) {
-      themeClass = "main dark";
+      themeClass = "main dark height-[100%]";
     }
   return (
     <>
-    <div className={themeClass}>
+    <div className={darkMode ? "dark" : ""}>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f172a]">
     {/*Add Task*/}
     {
       isAddTaskOpen===true && 
-      <div className="addtask-container">
-        <span className='mt-8 text-lg font-semibold'>New Task</span>
-        <span className='mt-5 font-semibold'>Title</span>
-        <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Enter task title..."/>
-        <span className='mt-5 font-semibold'>Description</span>
-        <textarea value={newDescription} onChange={(e) => setNewDescription(e.target.value)} placeholder="Enter task description..." />
-        <span className='mt-5 font-semibold'>Status</span>
+      <div className="addtask-container bg-white dark:bg-[#1e293b]">
+        <span className='mt-8 text-lg font-semibold dark:text-white'>New Task</span>
+        <span className='mt-5 font-semibold dark:text-white '>Title</span>
+        <input className='dark:bg-[#0f172a] dark:text-gray-100' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Enter task title..."/>
+        <span className='mt-5 font-semibold dark:text-white'>Description</span>
+        <textarea className='dark:bg-[#0f172a] dark:text-gray-100' value={newDescription} onChange={(e) => setNewDescription(e.target.value)} placeholder="Enter task description..." />
+        <span className='mt-5 font-semibold dark:text-white'>Status</span>
         <div className="statusbtn">
           <button className={pendingstatus} onClick={setPending}>
             <img src='./pending.png' className='w-[17px] h-[17px]'/>
             <span>Pending</span>
           </button>
-          <button className={completedstatus} onClick={setCompleted}>
+          <button className={`${editCompletedStatus} border border-[#00000014] dark:border-gray-700`} onClick={setCompleted}>
             <img src='./completed.png' className='w-[17px] h-[17px]'/>
             <span>Completed</span>
           </button>
         </div>
         <div className="cancel-and-create">
-          <button className="cancel border border-[#00000014] bg-white text-[#6b7280]" onClick={CancelTask}>Cancel</button>
-          <button className="create bg-[#00C4B0] text-white" onClick={createTask}>Create Task</button>
+          <button className="cancel border border-[#00000014] dark:border-gray-700 bg-white dark:bg-[#1e293b] dark:text-gray-500" onClick={CancelTask}>Cancel</button>
+          <button className="create bg-[#00C4B0]  text-white" onClick={createTask}>Create Task</button>
         </div>
       </div>
     }
@@ -247,13 +248,13 @@ function App() {
     {/*Edit Task*/}  
     {
       isEditTaskOpen===true && 
-      <div className="addtask-container">
-        <span className='mt-8 text-lg font-semibold'>Edit Task</span>
-        <span className='mt-5 font-semibold'>Title</span>
-        <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} placeholder="Enter task title..."/>
-        <span className='mt-5 font-semibold'>Description</span>
-        <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} className='!h-[80px]' placeholder="Enter task description..."/>
-        <span className='mt-5 font-semibold'>Status</span>
+      <div className="addtask-container bg-white dark:bg-[#1e293b]">
+        <span className='mt-8 text-lg font-semibold dark:text-white'>Edit Task</span>
+        <span className='mt-5 font-semibold dark:text-white'>Title</span>
+        <input className='dark:bg-[#0f172a] dark:text-gray-100' value={editTitle} onChange={(e) => setEditTitle(e.target.value)} placeholder="Enter task title..."/>
+        <span className='mt-5 font-semibold dark:text-white'>Description</span>
+        <textarea className='dark:bg-[#0f172a] dark:text-gray-100 h-[80px]' value={editDescription} onChange={(e) => setEditDescription(e.target.value)} placeholder="Enter task description..."/>
+        <span className='mt-5 font-semibold dark:text-white'>Status</span>
         <div className="statusbtn">
           <button className={editPendingStatus} onClick={setEditPending}>
             <img src="./pending.png" className="w-[17px] h-[17px]" />
@@ -266,7 +267,7 @@ function App() {
           </button>
         </div>
         <div className="cancel-and-create">
-          <button className="cancel border border-[#00000014] bg-white text-[#6b7280]" onClick={CancelEditTask}>Cancel</button>
+          <button className="cancel border border-[#00000014] dark:border-gray-700 bg-white dark:bg-[#1e293b] dark:text-gray-500" onClick={CancelEditTask}>Cancel</button>
           <button className="create bg-[#00C4B0] text-white" onClick={saveEditTask}>Save Changes</button>
         </div>
       </div>
@@ -274,51 +275,55 @@ function App() {
     <div className={isEditTaskOpen ? "blur-sm" : ""}>
 
 
-    <header>
-      <div className="header-container">
-      <div className="logo"><img src="logo.png" alt="Logo"/></div>
-      <span className="ml-[2.5vw] font-bold">TaskDash</span>
-      <button className="dark" onClick={toggleDarkMode}>
-        <img src='moon.png' className='h-[20px] w-[20px]'/>
+    <header className="bg-white dark:bg-[#1e293b]">
+      <div className="header-container ">
+      <div className="logo bg-[#F0F0F0] dark:bg-slate-900"><img src="logo.png" alt="Logo"/></div>
+      <span className="ml-[2.5vw] font-bold dark:text-white">TaskDash</span>
+      <button className="darkmode border border-gray-200 dark:border-gray-700" onClick={toggleDarkMode}>
+        {darkMode ? (
+            <img src="sun.png" className="h-[20px] w-[20px]" />
+          ) : (
+            <img src="moon.png" className="h-[20px] w-[20px]" />
+          )}
       </button>
       <button className="addtask" onClick={AddTask}>
-        <span>+</span><span>Add</span>
+        <span className='dark:text-black'>+</span><span className='dark:text-black'>Add</span>
       </button>
       </div>
     </header>
 
-    <div className="body-container">
+    <div className="body-container dark:bg-[#0f172a]">
     <div className="tasks-overview">
-      <div className="totaltask">
-        <div className="img-wrapper bg-gray-100">
+      <div className="totaltask bg-white dark:bg-[#1e293b]">
+        <div className="img-wrapper bg-gray-100 dark:bg-slate-900">
           <img src='./tasks.png' className='w-[17px] h-[17px]'/>
         </div>
-      <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.length}</span>
+      <span className='ml-[15px] mt-[10px] text-2xl font-bold dark:text-white'>{tasks.length}</span>
       <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Total Task/s</span>
       </div>
-      <div className="pending">
-        <div className="img-wrapper bg-[#FFFBEB]">
+      <div className="pending bg-white dark:bg-[#1e293b]">
+        <div className="img-wrapper bg-[#FFFBEB] dark:bg-amber-400/10">
           <img src='./pending.png' className='w-[17px] h-[17px]'/>
         </div>
-        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "pending").length}</span>
+        <span className='ml-[15px] mt-[10px] text-2xl font-bold dark:text-white'>{tasks.filter((task) => task.status === "pending").length}</span>
         <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Pending</span>
       </div>
-      <div className="completed">
-        <div className="img-wrapper bg-[#E6FAF7]">
+      <div className="completed bg-white dark:bg-[#1e293b]">
+        <div className="img-wrapper bg-[#E6FAF7] dark:bg-teal-900">
           <img src='./completed.png' className='w-[17px] h-[17px]'/>
         </div>
-        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "completed").length}</span>
+        <span className='ml-[15px] mt-[10px] text-2xl font-bold dark:text-white'>{tasks.filter((task) => task.status === "completed").length}</span>
         <span className='ml-[15px] mt-[5px] mb-[10px] text-sm font-semibold text-gray-500'>Completed</span>
       </div>
     </div>
 
     <div className="search-and-filter flex sm:flex-row">
-      <div className="search w-[100%] !sm:w-1/2">
+      <div className="search bg-white dark:bg-[#1e293b] w-[100%] !sm:w-1/2">
         <img src='./search.png'/>
-        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search tasks..."></input>
+        <input className='dark:text-white' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search tasks..."></input>
       </div>
-      <div className="filter w-[100%] !sm:w-1/2">
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+      <div className="filter bg-white dark:bg-[#1e293b] w-[100%] !sm:w-1/2">
+        <select className='dark:text-white' value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="all">All Tasks</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
@@ -327,9 +332,9 @@ function App() {
     </div>
 
     <div className="task-and-page">
-      <span>{filteredTasks.length} task/s</span>
-      <span>—</span>
-      <span>page {currentPage} of {totalPages}</span>
+      <span className='dark:text-gray-500'>{filteredTasks.length} task/s</span>
+      <span className='dark:text-gray-500'>—</span>
+      <span className='dark:text-gray-500'>page {currentPage} of {totalPages}</span>
     </div>
     
     <div className="task-container mt-5">
@@ -375,13 +380,13 @@ function App() {
         status = "Completed";
       }
 
-      let statusClass = "status mt-3 mb-4 text-xs bg-[#FFFBEB]";
+      let statusClass = "status mt-3 mb-4 text-xs bg-[#FFFBEB] dark:bg-amber-400/10 dark:text-amber-300";
       if (isCompleted) {
-        statusClass = "status mt-3 mb-4 text-xs bg-[#E6FAF7]";
+        statusClass = "status mt-3 mb-4 text-xs bg-[#E6FAF7] dark:bg-teal-900";
       }
 
       return (
-        <div className="task" key={task.id}>
+        <div className="task bg-white dark:bg-[#1e293b]" key={task.id}>
           <div className="btn-container">
             <button className={checkClass}>
               {checkIcon}
@@ -390,7 +395,7 @@ function App() {
 
           <div className="task-details">
             <div className="task-header">
-              <span className={titleClass}>
+              <span className={`${titleClass} dark:text-white`}>
                 {task.title}
               </span>
 
@@ -407,11 +412,11 @@ function App() {
                 }
               }} 
               className="mt-4 ml-auto w-[17px] h-[17px]">
-                <img src="./edit.png" />
+                <img src="./edit.png" className='dark:invert'/>
               </button>
 
               <button onClick={() => deleteTask(task.id)} className="mt-4 ml-4 mr-5 w-[17px] h-[17px]">
-                <img src="./delete.png" />
+                <img src="./delete.png" className='dark:invert'/>
               </button>
             </div>
 
@@ -445,19 +450,19 @@ function App() {
           setCurrentPage(1);
         }
       }} 
-      className={currentPage === 1 ? "doubleprevious opacity-30" : "doubleprevious border border-[#00000014]"}><img src='doubleprevious.png'/></button>
+      className={currentPage === 1 ? "doubleprevious opacity-30" : "doubleprevious border border-[#00000014] dark:border-gray-500 dark:bg-gray-400"}><img src='doubleprevious.png'/></button>
 
       <button onClick={() => {
         if (currentPage > 1) {
           setCurrentPage(currentPage - 1);
         }
       }} 
-      className={currentPage === 1 ? "previous opacity-30" : "previous border border-[#00000014]"}><img src='previous.png'/></button>
+      className={currentPage === 1 ? "previous opacity-30" : "previous border border-[#00000014] dark:border-gray-500 dark:bg-gray-400"}><img src='previous.png'/></button>
 
       {pages.map((page) => (
         <button
           key={page}
-          className={currentPage === page ? "active" : "border border-[#00000014]"}
+          className={currentPage === page ? "active" : "border border-[#00000014] dark:border-gray-500 dark:bg-gray-400"}
           onClick={() => setCurrentPage(page)}>
           {page}
         </button>
@@ -468,17 +473,17 @@ function App() {
           setCurrentPage(currentPage + 1);
         }
       }}
-      className={currentPage === totalPages ? "next opacity-30" : "next border border-[#00000014]" }><img className="scale-x-[-1]" src='previous.png'/></button>
+      className={currentPage === totalPages ? "next opacity-30" : "next border border-[#00000014] dark:border-gray-500 dark:bg-gray-400" }><img className="scale-x-[-1] dark:brightness-200 dark:contrast-150 dark:invert" src='previous.png'/></button>
 
       <button onClick={() => {
         if (currentPage !== totalPages) {
           setCurrentPage(totalPages);
         }
       }}
-      className={currentPage === totalPages ? "doublenext opacity-30" : "doublenext border border-[#00000014]"}><img className="scale-x-[-1]" src='doubleprevious.png'/></button>
+      className={currentPage === totalPages ? "doublenext opacity-30" : "doublenext border border-[#00000014] dark:border-gray-500 dark:bg-gray-400"}><img className="scale-x-[-1] " src='doubleprevious.png'/></button>
 
     </div>
-
+      </div>
     </div>
     </div>
     </div>
