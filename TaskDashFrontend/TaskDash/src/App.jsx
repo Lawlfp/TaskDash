@@ -97,21 +97,25 @@ function App() {
     });
 
     //Edit task
-  const [isEditTaskOpen,setEditTaskOpen] = useState(false);
-  function setEditPending() {
-  setEditPendingStatus("pending pendingactive");
-  setEditCompletedStatus("completed");
-  }
+    const [editStatus, setEditStatus] = useState("pending");
+    const [isEditTaskOpen,setEditTaskOpen] = useState(false);
+    function setEditPending() {
+    setEditStatus("pending");
+    setEditPendingStatus("pending pendingactive");
+    setEditCompletedStatus("completed");
+    }
 
   function setEditCompleted() {
+    setEditStatus("completed");
     setEditCompletedStatus("completed completedactive");
     setEditPendingStatus("pending");
   }
   function CancelEditTask() {
-    setEditTaskOpen(false);
-    setSelectedTaskId(null);
-    setEditTitle("");
-    setEditDescription("");
+      setEditTaskOpen(false);
+      setSelectedTaskId(null);
+      setEditTitle("");
+      setEditDescription("");
+      setEditStatus("pending");
   }
   const [editPendingStatus, setEditPendingStatus] = useState("pending pendingactive");
   const [editCompletedStatus, setEditCompletedStatus] = useState("completed");
@@ -121,20 +125,36 @@ function App() {
   const [editDescription, setEditDescription] = useState("");
 
   function saveEditTask() {
-  setTasks((prev) =>
-      prev.map((task) =>
-        task.id === selectedTaskId
-          ? {
-              ...task,
-              title: editTitle,
-              description: editDescription,
-              status: editCompletedStatus.includes("completedactive") ? "completed" : "pending",
-            }
-          : task
-      )
-    );
+    let status = "pending";
 
-    setEditTaskOpen(false);
+    if (editStatus === "completed") {
+      status = "completed";
+    } else {
+      status = "pending";
+    }
+
+    fetch(`http://127.0.0.1:8000/api/tasks/${selectedTaskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: editTitle,
+        description: editDescription,
+        status: status,
+      }),
+    })
+      .then((res) => res.json())
+      .then((updatedTask) => {
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === selectedTaskId ? updatedTask : task
+          )
+        );
+
+        setEditTaskOpen(false);
+        setSelectedTaskId(null);
+      });
   }
 
   //delete task
@@ -362,7 +382,7 @@ function App() {
                 setSelectedTaskId(task.id);
                 setEditTitle(task.title);
                 setEditDescription(task.description);
-
+                setEditStatus(task.status);
                 if (task.status === "pending") {
                   setEditPending();
                 } else {
