@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [isAddTaskOpen,setAddTaskOpen] = useState(false);
@@ -17,7 +17,6 @@ function App() {
 
   function createTask() {
     const newTask = {
-      id: nextId,
       title: newTitle,
       description: newDescription,
       status: newStatus,
@@ -28,158 +27,56 @@ function App() {
       })
     };
 
-    setTasks(prev => [newTask, ...prev]);
-    setNextId(prev => prev + 1);
+    fetch("http://127.0.0.1:8000/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTask)
+    })
+      .then(res => res.json())
+      .then(data => {
+        setTasks(prev => [data, ...prev]);
+      });
+
 
     setNewTitle("");
     setNewDescription("");
     setNewStatus("pending");
     setAddTaskOpen(false);
+    setPendingStatus("pending pendingactive");
+    setCompletedStatus("completed");
   }
 
   //Add task Status state
   const [pendingstatus, setPendingStatus] = useState("pending pendingactive");
   const [completedstatus, setCompletedStatus] = useState("completed");
   function setPending() {
-    setPendingStatus("pending pendingactive");
-    setCompletedStatus("completed");
+      setNewStatus("pending");
+      setPendingStatus("pending pendingactive");
+      setCompletedStatus("completed");
   }
 
   function setCompleted() {
-    setCompletedStatus("completed completedactive");
-    setPendingStatus("pending");
+      setNewStatus("completed");
+      setCompletedStatus("completed completedactive");
+      setPendingStatus("pending");
   }
 
 
-
-  {/*Sample tasks*/}
-  const [tasks,setTasks]= useState([
-  {
-    id: 1,
-    title: "Titlea",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "pending",
-    date: "May 25, 2026",
-  },
-  {
-    id: 2,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 3,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 4,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 5,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 6,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 7,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 8,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 9,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 10,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  {
-    id: 11,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-    {
-    id: 12,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-    {
-    id: 13,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-    {
-    id: 14,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-    {
-    id: 15,
-    title: "Title",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    status: "completed",
-    date: "May 25, 2026",
-  },
-  ]);
-
-  const [nextId, setNextId] = useState(() =>
-    Math.max(...tasks.map(task => task.id)) + 1
-  );
-
+  const [tasks,setTasks]= useState([]);
+  {/*Fetch tasks*/}
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/tasks")
+      .then((res) => res.json())
+      .then((data) => setTasks(data))
+      .catch((err) => console.log(err));
+  }, []);
+  
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   //Search and Filter Tasks
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -360,7 +257,7 @@ function App() {
           <img src='./tasks.png' className='w-[17px] h-[17px]'/>
         </div>
       <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.length}</span>
-      <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Total Tasks</span>
+      <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Total Task/s</span>
       </div>
       <div className="pending">
         <div className="img-wrapper bg-[#FFFBEB]">
@@ -494,7 +391,7 @@ function App() {
               </div>
 
               <span className="date mt-3 mb-4 ml-3 py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">
-                {task.date}
+                {formatDate(task.created_at)}
               </span>
             </div>
           </div>
