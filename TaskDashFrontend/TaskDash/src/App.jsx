@@ -15,6 +15,28 @@ function App() {
   const [newDescription, setNewDescription] = useState("");
   const [newStatus, setNewStatus] = useState("pending");
 
+  function createTask() {
+    const newTask = {
+      id: nextId,
+      title: newTitle,
+      description: newDescription,
+      status: newStatus,
+      date: new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    };
+
+    setTasks(prev => [newTask, ...prev]);
+    setNextId(prev => prev + 1);
+
+    setNewTitle("");
+    setNewDescription("");
+    setNewStatus("pending");
+    setAddTaskOpen(false);
+  }
+
   //Add task Status state
   const [pendingstatus, setPendingStatus] = useState("pending pendingactive");
   const [completedstatus, setCompletedStatus] = useState("completed");
@@ -154,6 +176,10 @@ function App() {
   },
   ]);
 
+  const [nextId, setNextId] = useState(() =>
+    Math.max(...tasks.map(task => task.id)) + 1
+  );
+
   //Search and Filter Tasks
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -205,16 +231,24 @@ function App() {
               ...task,
               title: editTitle,
               description: editDescription,
-              status:
-                editCompletedStatus.includes("completedactive")
-                  ? "completed"
-                  : "pending",
+              status: editCompletedStatus.includes("completedactive") ? "completed" : "pending",
             }
           : task
       )
     );
 
     setEditTaskOpen(false);
+  }
+
+  //delete task
+  function deleteTask(id) {
+  const answer = confirm("Delete this task?");
+
+  if (answer === false) {
+    return;
+  }
+
+  setTasks(tasks.filter(task => task.id !== id));
   }
 
   //pagination
@@ -256,7 +290,7 @@ function App() {
         <span className='mt-5 font-semibold'>Title</span>
         <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Enter task title..."/>
         <span className='mt-5 font-semibold'>Description</span>
-        <textarea className='!h-[80px] !align-top !items-start' placeholder="Enter task description..."></textarea>
+        <textarea value={newDescription} onChange={(e) => setNewDescription(e.target.value)} placeholder="Enter task description..." />
         <span className='mt-5 font-semibold'>Status</span>
         <div className="statusbtn">
           <button className={pendingstatus} onClick={setPending}>
@@ -270,7 +304,7 @@ function App() {
         </div>
         <div className="cancel-and-create">
           <button className="cancel border border-[#00000014] bg-white text-[#6b7280]" onClick={CancelTask}>Cancel</button>
-          <button className="create bg-[#00C4B0] text-white">Create Task</button>
+          <button className="create bg-[#00C4B0] text-white" onClick={createTask}>Create Task</button>
         </div>
       </div>
     }
@@ -442,7 +476,7 @@ function App() {
                 <img src="./edit.png" />
               </button>
 
-              <button className="mt-4 ml-4 mr-5 w-[17px] h-[17px]">
+              <button onClick={() => deleteTask(task.id)} className="mt-4 ml-4 mr-5 w-[17px] h-[17px]">
                 <img src="./delete.png" />
               </button>
             </div>

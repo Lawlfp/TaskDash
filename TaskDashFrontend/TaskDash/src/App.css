@@ -301,7 +301,7 @@ header .addtask{
 }
 .addtask-container textarea{
   padding-top:10px;
-  height: 40px;
+  height: 80px;
   border: 1px solid #00000014;
   border-radius: 10px;
   padding-left: 15px;
