@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 function App() {
   const [isAddTaskOpen,setAddTaskOpen] = useState(false);
+
   function AddTask(){
     setAddTaskOpen(true);
   }
@@ -10,6 +11,9 @@ function App() {
     setAddTaskOpen(false);
     setPending();
   }
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newStatus, setNewStatus] = useState("pending");
 
   //Add task Status state
   const [pendingstatus, setPendingStatus] = useState("pending pendingactive");
@@ -24,8 +28,10 @@ function App() {
     setPendingStatus("pending");
   }
 
+
+
   {/*Sample tasks*/}
-  const tasks = [
+  const [tasks,setTasks]= useState([
   {
     id: 1,
     title: "Titlea",
@@ -146,28 +152,71 @@ function App() {
     status: "completed",
     date: "May 25, 2026",
   },
-  ];
+  ]);
 
   //Search and Filter Tasks
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const filteredTasks = tasks.filter((task) => {
-    const matchSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const [searchTerm, setSearchTerm] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+    const filteredTasks = tasks.filter((task) => {
+      const matchSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-    let matchStatus = true;
+      let matchStatus = true;
 
-    if (statusFilter === "all") {
-      matchStatus = true;
-    } else if (task.status === statusFilter) {
-      matchStatus = true;
-    } else {
-      matchStatus = false;
-    }
+      if (statusFilter === "all") {
+        matchStatus = true;
+      } else if (task.status === statusFilter) {
+        matchStatus = true;
+      } else {
+        matchStatus = false;
+      }
 
-    return matchSearch && matchStatus;
-  });
+      return matchSearch && matchStatus;
+    });
 
-  
+    //Edit task
+  const [isEditTaskOpen,setEditTaskOpen] = useState(false);
+  function setEditPending() {
+  setEditPendingStatus("pending pendingactive");
+  setEditCompletedStatus("completed");
+  }
+
+  function setEditCompleted() {
+    setEditCompletedStatus("completed completedactive");
+    setEditPendingStatus("pending");
+  }
+  function CancelEditTask() {
+    setEditTaskOpen(false);
+    setSelectedTaskId(null);
+    setEditTitle("");
+    setEditDescription("");
+  }
+  const [editPendingStatus, setEditPendingStatus] = useState("pending pendingactive");
+  const [editCompletedStatus, setEditCompletedStatus] = useState("completed");
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+
+  function saveEditTask() {
+  setTasks((prev) =>
+      prev.map((task) =>
+        task.id === selectedTaskId
+          ? {
+              ...task,
+              title: editTitle,
+              description: editDescription,
+              status:
+                editCompletedStatus.includes("completedactive")
+                  ? "completed"
+                  : "pending",
+            }
+          : task
+      )
+    );
+
+    setEditTaskOpen(false);
+  }
+
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -205,7 +254,7 @@ function App() {
       <div className="addtask-container">
         <span className='mt-8 text-lg font-semibold'>New Task</span>
         <span className='mt-5 font-semibold'>Title</span>
-        <input placeholder="Enter task title..."></input>
+        <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Enter task title..."/>
         <span className='mt-5 font-semibold'>Description</span>
         <textarea className='!h-[80px] !align-top !items-start' placeholder="Enter task description..."></textarea>
         <span className='mt-5 font-semibold'>Status</span>
@@ -226,7 +275,36 @@ function App() {
       </div>
     }
     <div className={isAddTaskOpen ? "blur-sm" : ""}>
-      
+
+    {/*Edit Task*/}  
+    {
+      isEditTaskOpen===true && 
+      <div className="addtask-container">
+        <span className='mt-8 text-lg font-semibold'>Edit Task</span>
+        <span className='mt-5 font-semibold'>Title</span>
+        <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} placeholder="Enter task title..."/>
+        <span className='mt-5 font-semibold'>Description</span>
+        <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} className='!h-[80px]' placeholder="Enter task description..."/>
+        <span className='mt-5 font-semibold'>Status</span>
+        <div className="statusbtn">
+          <button className={editPendingStatus} onClick={setEditPending}>
+            <img src="./pending.png" className="w-[17px] h-[17px]" />
+            <span>Pending</span>
+          </button>
+
+          <button className={editCompletedStatus} onClick={setEditCompleted}>
+            <img src="./completed.png" className="w-[17px] h-[17px]" />
+            <span>Completed</span>
+          </button>
+        </div>
+        <div className="cancel-and-create">
+          <button className="cancel border border-[#00000014] bg-white text-[#6b7280]" onClick={CancelEditTask}>Cancel</button>
+          <button className="create bg-[#00C4B0] text-white" onClick={saveEditTask}>Save Changes</button>
+        </div>
+      </div>
+    }
+    <div className={isEditTaskOpen ? "blur-sm" : ""}>
+
 
     <header>
       <div className="header-container">
@@ -348,7 +426,19 @@ function App() {
                 {task.title}
               </span>
 
-              <button className="mt-4 ml-auto w-[17px] h-[17px]">
+              <button onClick={() => {
+                setEditTaskOpen(true);
+                setSelectedTaskId(task.id);
+                setEditTitle(task.title);
+                setEditDescription(task.description);
+
+                if (task.status === "pending") {
+                  setEditPending();
+                } else {
+                  setEditCompleted();
+                }
+              }} 
+              className="mt-4 ml-auto w-[17px] h-[17px]">
                 <img src="./edit.png" />
               </button>
 
@@ -421,7 +511,7 @@ function App() {
 
     </div>
 
-
+    </div>
     </div>
     </div>
     </>
