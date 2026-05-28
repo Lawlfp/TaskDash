@@ -8,6 +8,7 @@ function App() {
   }
   function CancelTask(){
     setAddTaskOpen(false);
+    setPending();
   }
 
   //Add task Status state
@@ -22,7 +23,42 @@ function App() {
     setCompletedStatus("completed completedactive");
     setPendingStatus("pending");
   }
-  
+
+  {/*Sample tasks*/}
+  const tasks = [
+  {
+    id: 1,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "pending",
+    date: "May 25, 2026",
+  },
+  {
+    id: 2,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 3,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+  {
+    id: 4,
+    title: "Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    status: "completed",
+    date: "May 25, 2026",
+  },
+];
   return (
     <>
     {/*Add Task*/}
@@ -113,48 +149,96 @@ function App() {
     </div>
     
     <div className="task-container mt-5">
+      
+    {/*Tasks */}
+    {tasks.map((task) => {
 
-      <div className="task">
-        <div className="btn-container"><button className="check"></button>
-        </div>
-        <div className="task-details">
-          <div className="task-header">
-            <span className='mt-3 text-base font-semibold'>Title</span>
-            <button className='mt-4 ml-auto w-[17px] h-[17px] '>
-              <img src='./edit.png' />
-            </button>
-            <button className='mt-4 ml-4 mr-5 w-[17px] h-[17px]'>
-              <img src='./delete.png'/>
-            </button>
-          </div>
-          <span className='mt-2.5 text-sm text-gray-500 pr-5'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-          <div className="status-and-date">
-            <div className="status mt-3 mb-4 text-xs bg-[#FFFBEB]"><img src='./pending.png'/><span className="font-semibold text-[#D97706]">Pending</span></div>
-            <span className="date mt-3 mb-4 ml-3  py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">May 25, 2026</span>
-          </div>
-        </div>
-      </div>  
+      let isCompleted = task.status === "completed";
 
-      <div className="task">
-        <div className="btn-container"><button className="check bg-[#00C4B0] flex items-center justify-center text-white"><img src='./check.png' className='w-[13px] h-[13px]'/></button>
-        </div>
-        <div className="task-details">
-          <div className="task-header">
-            <span className='mt-3 text-base font-semibold opacity-50 line-through'>Title</span>
-            <button className='mt-4 ml-auto w-[17px] h-[17px] '>
-              <img src='./edit.png' />
-            </button>
-            <button className='mt-4 ml-4 mr-5 w-[17px] h-[17px]'>
-              <img src='./delete.png'/>
+      let checkIcon = null;
+      if (isCompleted) {
+        checkIcon = <img src="./check.png" className="w-[13px] h-[13px]" />;
+      }
+
+      let checkClass = "check";
+      if (isCompleted) {
+        checkClass =
+          "check bg-[#00C4B0] flex items-center justify-center text-white";
+      }
+
+      let titleClass = "mt-3 text-base font-semibold";
+      if (isCompleted) {
+        titleClass = titleClass + " opacity-50 line-through";
+      }
+
+      let descriptionClass = "mt-2.5 text-sm text-gray-500 pr-5";
+      if (isCompleted) {
+        descriptionClass = descriptionClass + " opacity-50";
+      }
+
+      let statusIcon = "./pending.png";
+      if (isCompleted) {
+        statusIcon = "./completed.png";
+      }
+
+      let statusTextClass = "font-semibold text-[#D97706]";
+      if (isCompleted) {
+        statusTextClass = "font-semibold text-[#00C4B0]";
+      }
+
+      let status = "Pending";
+      if (isCompleted) {
+        status = "Completed";
+      }
+
+      let statusClass = "status mt-3 mb-4 text-xs bg-[#FFFBEB]";
+      if (isCompleted) {
+        statusClass = "status mt-3 mb-4 text-xs bg-[#E6FAF7]";
+      }
+
+      return (
+        <div className="task" key={task.id}>
+          <div className="btn-container">
+            <button className={checkClass}>
+              {checkIcon}
             </button>
           </div>
-          <span className='mt-2.5 text-sm text-gray-500 pr-5 opacity-50'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-          <div className="status-and-date">
-            <div className="status mt-3 mb-4 text-xs bg-[#E6FAF7]"><img src='./completed.png'/><span className="font-semibold text-[#00C4B0]">Completed</span></div>
-            <span className="date mt-3 mb-4 ml-3  py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">May 25, 2026</span>
+
+          <div className="task-details">
+            <div className="task-header">
+              <span className={titleClass}>
+                {task.title}
+              </span>
+
+              <button className="mt-4 ml-auto w-[17px] h-[17px]">
+                <img src="./edit.png" />
+              </button>
+
+              <button className="mt-4 ml-4 mr-5 w-[17px] h-[17px]">
+                <img src="./delete.png" />
+              </button>
+            </div>
+
+            <span className={descriptionClass}>
+              {task.description}
+            </span>
+
+            <div className="status-and-date">
+              <div className={statusClass}>
+                <img src={statusIcon} className="w-[17px] h-[17px]" />
+                <span className={statusTextClass}>
+                  {status}
+                </span>
+              </div>
+
+              <span className="date mt-3 mb-4 ml-3 py-[2px] text-xs text-gray-400 font-[JetBrains_Mono,monospace]">
+                {task.date}
+              </span>
+            </div>
           </div>
         </div>
-      </div>  
+      );
+    })}
 
     </div>
 
@@ -167,7 +251,6 @@ function App() {
       <button className="next border border-[#00000014]"><img className="scale-x-[-1]" src='previous.png'/></button>
       <button className="doublenext border border-[#00000014]"><img className="scale-x-[-1]" src='doubleprevious.png'/></button>
     </div>
-
 
     </div>
     </div>
