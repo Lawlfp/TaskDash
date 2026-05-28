@@ -1,9 +1,59 @@
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [isAddTaskOpen,setAddTaskOpen] = useState(false);
+  function AddTask(){
+    setAddTaskOpen(true);
+  }
+  function CancelTask(){
+    setAddTaskOpen(false);
+  }
 
+  //Add task Status state
+  const [pendingstatus, setPendingStatus] = useState("pending pendingactive");
+  const [completedstatus, setCompletedStatus] = useState("completed");
+  function setPending() {
+    setPendingStatus("pending pendingactive");
+    setCompletedStatus("completed");
+  }
+
+  function setCompleted() {
+    setCompletedStatus("completed completedactive");
+    setPendingStatus("pending");
+  }
+  
   return (
     <>
+    {/*Add Task*/}
+    {
+      isAddTaskOpen===true && 
+      <div className="addtask-container">
+        <span className='mt-8 text-lg font-semibold'>New Task</span>
+        <span className='mt-5 font-semibold'>Title</span>
+        <input placeholder="Enter task title..."></input>
+        <span className='mt-5 font-semibold'>Description</span>
+        <textarea className='!h-[80px] !align-top !items-start' placeholder="Enter task description..."></textarea>
+        <span className='mt-5 font-semibold'>Status</span>
+        <div className="statusbtn">
+          <button className={pendingstatus} onClick={setPending}>
+            <img src='./pending.png' className='w-[17px] h-[17px]'/>
+            <span>Pending</span>
+          </button>
+          <button className={completedstatus} onClick={setCompleted}>
+            <img src='./completed.png' className='w-[17px] h-[17px]'/>
+            <span>Completed</span>
+          </button>
+        </div>
+        <div className="cancel-and-create">
+          <button className="cancel border border-[#00000014] bg-white text-[#6b7280]" onClick={CancelTask}>Cancel</button>
+          <button className="create bg-[#00C4B0] text-white">Create Task</button>
+        </div>
+      </div>
+    }
+    <div className={isAddTaskOpen ? "blur-sm" : ""}>
+      
+
     <header>
       <div className="header-container">
       <div className="logo"><img src="logo.png" alt="Logo"/></div>
@@ -11,7 +61,9 @@ function App() {
       <button className="dark">
         <img src='moon.png' className='h-[20px] w-[20px]'/>
       </button>
-      <button className="addtask"><span>+</span><span>Add</span></button>
+      <button className="addtask" onClick={AddTask}>
+        <span>+</span><span>Add</span>
+      </button>
       </div>
     </header>
 
@@ -87,7 +139,15 @@ function App() {
         <div className="btn-container"><button className="check bg-[#00C4B0] flex items-center justify-center text-white"><img src='./check.png' className='w-[13px] h-[13px]'/></button>
         </div>
         <div className="task-details">
-          <span className='mt-3 text-base font-semibold opacity-50 line-through'>Title</span>
+          <div className="task-header">
+            <span className='mt-3 text-base font-semibold opacity-50 line-through'>Title</span>
+            <button className='mt-4 ml-auto w-[17px] h-[17px] '>
+              <img src='./edit.png' />
+            </button>
+            <button className='mt-4 ml-4 mr-5 w-[17px] h-[17px]'>
+              <img src='./delete.png'/>
+            </button>
+          </div>
           <span className='mt-2.5 text-sm text-gray-500 pr-5 opacity-50'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
           <div className="status-and-date">
             <div className="status mt-3 mb-4 text-xs bg-[#E6FAF7]"><img src='./completed.png'/><span className="font-semibold text-[#00C4B0]">Completed</span></div>
@@ -97,6 +157,7 @@ function App() {
       </div>  
 
     </div>
+
     <div className="pagination">
       <button className="doubleprevious opacity-30"><img src='doubleprevious.png'/></button>
       <button className="previous opacity-30"><img src='previous.png'/></button>
@@ -105,6 +166,9 @@ function App() {
       <button className='border border-[#00000014]'>3</button>
       <button className="next border border-[#00000014]"><img className="scale-x-[-1]" src='previous.png'/></button>
       <button className="doublenext border border-[#00000014]"><img className="scale-x-[-1]" src='doubleprevious.png'/></button>
+    </div>
+
+
     </div>
     </div>
     </>

@@ -266,3 +266,86 @@ header .addtask{
   width: 15px;
   height: 15px;
 }
+
+.addtask-container{
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 450px;
+  border-radius: 10px;
+  height: auto;
+  background: white;
+  z-index: 999;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  padding-left:30px;
+  padding-right:30px;
+}
+.addtask-container span{
+  font-family: "Source Sans 3", sans-serif;
+}
+.statusbtn{
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+.addtask-container input{
+
+  height: 40px;
+  border: 1px solid #00000014;
+  border-radius: 10px;
+  padding-left: 15px;
+  
+}
+.addtask-container textarea{
+  padding-top:10px;
+  height: 40px;
+  border: 1px solid #00000014;
+  border-radius: 10px;
+  padding-left: 15px;
+  resize: none;
+}
+.statusbtn button{
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:10px;
+  color: #6b7280;
+
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  flex:1;
+  height: 40px;
+  border: 1px solid #00000014;
+  align-items: center;
+  justify-content: center;
+}
+.cancel-and-create{
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+}
+.cancel-and-create button{
+  flex:1;
+  height: 40px;
+  border-radius: 10px;
+  font-weight: 500;
+  margin-top:25px;
+  margin-bottom: 25px;
+}
+.pendingactive{
+  color: #D97706 !important;
+  border: 1px solid #FCC419 !important;
+  background-color: #FFF7CD !important;
+}
+.completedactive{
+  color: #00C4B0 !important;
+  border: 1px solid #00C4B0 !important;
+  background-color: #e6f4f3 !important;
+}
