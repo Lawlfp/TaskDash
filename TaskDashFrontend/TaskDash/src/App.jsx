@@ -28,7 +28,7 @@ function App() {
   const tasks = [
   {
     id: 1,
-    title: "Title",
+    title: "Titlea",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     status: "pending",
@@ -148,15 +148,35 @@ function App() {
   },
   ];
 
+  //Search and Filter Tasks
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const filteredTasks = tasks.filter((task) => {
+    const matchSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+    let matchStatus = true;
+
+    if (statusFilter === "all") {
+      matchStatus = true;
+    } else if (task.status === statusFilter) {
+      matchStatus = true;
+    } else {
+      matchStatus = false;
+    }
+
+    return matchSearch && matchStatus;
+  });
+
+  
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentTasks = tasks.slice(indexOfFirstItem, indexOfLastItem);
+  const currentTasks = filteredTasks.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(tasks.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
 
   const pages = [];
   let start = currentPage;
@@ -174,6 +194,8 @@ function App() {
       pages.push(i);
     }
   }
+
+
 
   return (
     <>
@@ -225,21 +247,21 @@ function App() {
         <div className="img-wrapper bg-gray-100">
           <img src='./tasks.png' className='w-[17px] h-[17px]'/>
         </div>
-      <span className='ml-[15px] mt-[10px] text-2xl font-bold'>12</span>
+      <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.length}</span>
       <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Total Tasks</span>
       </div>
       <div className="pending">
         <div className="img-wrapper bg-[#FFFBEB]">
           <img src='./pending.png' className='w-[17px] h-[17px]'/>
         </div>
-        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>12</span>
+        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "pending").length}</span>
         <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Pending</span>
       </div>
       <div className="completed">
         <div className="img-wrapper bg-[#E6FAF7]">
           <img src='./completed.png' className='w-[17px] h-[17px]'/>
         </div>
-        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>12</span>
+        <span className='ml-[15px] mt-[10px] text-2xl font-bold'>{tasks.filter((task) => task.status === "completed").length}</span>
         <span className='ml-[15px] mt-[5px] text-sm font-semibold text-gray-500'>Completed</span>
       </div>
     </div>
@@ -247,10 +269,10 @@ function App() {
     <div className="search-and-filter">
       <div className="search">
         <img src='./search.png'/>
-        <input placeholder="Search tasks..."></input>
+        <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search tasks..."></input>
       </div>
       <div className="filter">
-        <select>
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="all">All Tasks</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
@@ -259,7 +281,7 @@ function App() {
     </div>
 
     <div className="task-and-page">
-      <span>{tasks.length} tasks</span>
+      <span>{filteredTasks.length} task/s</span>
       <span>—</span>
       <span>page {currentPage} of {totalPages}</span>
     </div>
