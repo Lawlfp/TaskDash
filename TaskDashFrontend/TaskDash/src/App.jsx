@@ -158,15 +158,22 @@ function App() {
   }
 
   //delete task
-  function deleteTask(id) {
-  const answer = confirm("Delete this task?");
+    function deleteTask(id) {
+      const answer = confirm("Delete this task?");
 
-  if (answer === false) {
-    return;
-  }
-
-  setTasks(tasks.filter(task => task.id !== id));
-  }
+      if (answer === true) {
+        fetch(`http://127.0.0.1:8000/api/tasks/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then(() => {
+            setTasks((prev) =>
+              prev.filter((task) => task.id !== id)
+            );
+          })
+          .catch((err) => console.log(err));
+      }
+    }
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
